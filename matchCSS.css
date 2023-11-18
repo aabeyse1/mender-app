@@ -1,28 +1,30 @@
 ul {
-list-style-type: none;
-margin: 0;
-padding: 0;
-overflow: hidden;
-background-color:blueviolet;
-position: absolute;
-display: flex;
-flex-direction: row;
-justify-content: space-around;
-bottom: 0px;
-width: 100%;
-text-align: center;
-
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color:blueviolet;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
 }
+
 li a {
-display: inline-block;
-color: white;
-text-align: center;
-padding: 14px 16px;
-text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: larger;  
+    text-decoration: none;
 }
 
 li a:hover {
-background-color: #26022e;
+    background-color: #26022e;
+    text-decoration: none;
 }
 
 .buttons {
@@ -32,5 +34,4 @@ background-color: #26022e;
     justify-content: space-around;
     height: 100vh;
     margin: 0;
-
 }
