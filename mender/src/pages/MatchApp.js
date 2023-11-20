@@ -3,6 +3,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './MatchApp.css'; // Make sure to create a CSS file for your styles
 import placeholderImage from './placeholder.png'
+import mockupImage from './arnikaMockup.png'
 
 const MatchPage = () => {
   const handleReject = () => {
@@ -37,7 +38,7 @@ const MatchPage = () => {
           Reject
         </button>
 
-        <img src="https://assets-global.website-files.com/5e66ca0250be6103da645a88/64370e06159764728a6c6554_Account%20Executive.webp" alt="Profile" />
+        <img src={mockupImage} alt="Profile" />
 
         <button id="acceptButton" className="btn btn-success btn-lg" onClick={handleAccept}>
           Accept
