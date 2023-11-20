@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import placeholderImage from './placeholder.png'
 
 const Contact = () => {
     return (
@@ -12,7 +13,7 @@ const Contact = () => {
 
             
             <div class="header">
-                <img src="mender/src/asset/placeholder.png" class="pageImg" alt="Profile" />
+                <img src={placeholderImage} class="pageImg" alt="Profile" />
                 <h1 class="pageHeader">First Last Name</h1>
             </div>
 
