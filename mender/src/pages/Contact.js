@@ -5,13 +5,21 @@ import placeholderImage from './placeholder.png'
 const Contact = () => {
     return (
         <>
+
+            <div class="topNav">
+                <p class="navTitle">Mender</p>
+                <div class="navProfile">
+                    <img src={placeholderImage} class="profileImg" alt="Profile" />
+                    <h1 class="profileText">First Last Name</h1>
+                </div>
+            </div>
+
             <ul>
                 <li><a href="default.asp">Home</a></li>
                 <li><a href="news.asp">Matches</a></li>
                 <li><a href="contact.asp">Profiles</a></li>
             </ul>
 
-            
             <div class="header">
                 <img src={placeholderImage} class="pageImg" alt="Profile" />
                 <h1 class="pageHeader">First Last Name</h1>
