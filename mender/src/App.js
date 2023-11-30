@@ -2,6 +2,7 @@
 import React from 'react';
 import MatchApp from './pages/MatchApp';
 import Contact from './pages/Contact';
+import Matches from './pages/Matches';
 
 function App() {
   return (

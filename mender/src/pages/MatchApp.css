@@ -98,7 +98,7 @@ input {
 .navTitle {
     margin-left: 10px; 
     margin-right: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 25px;
     color: white;
     font-weight: bold;
@@ -122,4 +122,34 @@ input {
     margin-right: 10px; 
     margin-bottom: 16px;
     margin-top: 16px;
+}
+
+/* Matches page styling: */
+.contact-card {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4edf3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 500px;
+    margin: 20px;
+}
+
+.cardImg {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%; 
+}
+
+.contact-details {
+    padding: 20px;
+    text-align: center;
+}
+
+.matchName {
+    color: #333;
+    font-weight: bold;
+    font-size: larger;
 }
