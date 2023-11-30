@@ -38,7 +38,7 @@ const MatchPage = () => {
           Reject
         </button>
 
-        <img src={mockupImage} alt="Profile" />
+        <img src={mockupImage} alt="Profile"/>
 
         <button id="acceptButton" className="btn btn-success btn-lg" onClick={handleAccept}>
           Accept
