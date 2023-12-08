@@ -5,7 +5,7 @@ module.exports = {
     extend: {},
     fontFamily: {
       'Merriweather Sans': ['"Merriweather Sans"', 'sans']
-    }
+    },
   },
   plugins: [],
 }

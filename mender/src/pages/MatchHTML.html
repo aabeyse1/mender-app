@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="MatchApp.css">
 </head>
+
 <body>
     <div>
         <div class="topNav">
-              <p class="navTitle">Mender</p>
-              <div class="navProfile">
-                  <img src={placeholderImage} class="profileImg" alt="Profile" />
-                  <h1 class="profileText">First Last Name</h1>
-              </div>
+            <p class="navTitle">Mender</p>
+            <div class="navProfile">
+                <img src={placeholderImage} class="profileImg" alt="Profile" />
+                <h1 class="profileText">First Last Name</h1>
+            </div>
         </div>
         <!--React Componet for topNav: 
             import React from 'react';
@@ -33,20 +35,20 @@
 
             export default TopNav;
         
-            and then in App.js, you would put <TopNav /> -->    
+            and then in App.js, you would put <TopNav /> -->
         <ul>
             <li><a href="default.asp">Home</a></li>
             <li><a href="news.asp">Matches</a></li>
             <li><a href="contact.asp">Profiles</a></li>
         </ul>
-    
-        <div class="AcceptReject"> 
+
+        <div class="AcceptReject">
             <!--Renamed this div to AcceptReject instead of Buttons for consistency-->
             <button class="buttonsClass" id="rejectButton" onClick={handleReject}>
                 Reject
             </button>
 
-            <img src={mockupImage} alt="Profile"/>
+            <img src={mockupImage} alt="Profile" />
 
             <button class="buttonsClass" id="acceptButton" onClick={handleAccept}>
                 Accept
@@ -54,4 +56,5 @@
         </div>
     </div>
 </body>
+
 </html>
