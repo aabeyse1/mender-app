@@ -1,31 +1,70 @@
 from pymongo import MongoClient
-# import random
-# import string
 
-def get_db_handle(db_name):
-    connection_string = "mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net/?retryWrites=true&w=majority"
-    mongo_client = MongoClient(connection_string)
-    db_handle = mongo_client[db_name]
-    return db_handle, mongo_client
-    # our db_name: mender
+# MongoDB connection details
+connection_string = "mongodb+srv://cluster0.yl9k9ng.mongodb.net/"
+username = "mender-admin"
+password = "446projxyz"   
+database_name = "mender" 
 
-def get_collection_handle(db_handle, collection_name):
-    return db_handle[collection_name]
-    # current db_collection: users
+# connect to MongoDB
+client = MongoClient(connection_string, username=username, password=password)
+
+# get database
+db = client[database_name]
+
+# get collection
+collection_name = "users"  
+collection = db[collection_name]
+
+# test data insert
+document_to_insert = {"test": "testing"}
+collection.insert_one(document_to_insert)
+
+result = collection.find()
+for document in result:
+    print(document)
+
+client.close()
+
+## alternative code???? will test and delete later
+
+# from pymongo import MongoClient
+
+# def get_db_handle():
+#     connection_string = "mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net/mender/?retryWrites=true&w=majority"
+#     mongo_client = MongoClient(connection_string)
+#     return mongo_client
+#     # our db_name: mender
+
+# def get_users_db():
+#     db = get_db_handle()["mender"]  
+#     collection = db["users"]
+#     return collection
 
 
-# def generate_random_string(length):
-#     letters = string.ascii_letters
-#     return ''.join(random.choice(letters) for _ in range(length))
+# # Get database and collection handles
+# db = get_db_handle()
+# users = get_users_db()
 
-# num_users = 10
 
-# for _ in range(num_users):
-#     user_data = {
-#         "name": generate_random_string(8),   
-#         "email": f"{generate_random_string(5)}@example.com"  
-#     }
-#     collection.insert_one(user_data)
+# try:
+#     # MongoDB operations
+#     print(f"working")
+# # test operations
+#     document_to_insert = {"name": "Region 1", "population": 1000000}
+#     users.insert_one(document_to_insert)
 
-# print(f"{num_users} placeholder users added to the 'users' collection.")
+#     documents_to_update = {"name": "Region 1"}
+#     update_operation = {"$set": {"population": 1500000}}
+#     users.update_one(documents_to_update, update_operation)
 
+#     # Query documents
+#     result = users.find({"name": "Region 1"})
+#     for document in result:
+#         print(document)
+
+# except Exception as e:
+#     print(f"Error: {e}")
+
+# # Close the MongoDB client when done
+# db.close()
