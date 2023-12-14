@@ -3,11 +3,13 @@ import React from 'react';
 import MatchApp from './pages/MatchApp';
 import Contact from './pages/Contact';
 import Matches from './pages/Matches';
+import DisplayData from './pages/test.js'
 
 function App() {
   return (
-    <div className="App">
-      <MatchApp/>
+    <div>
+      {/* <MatchApp/> */}
+      <DisplayData/>
     </div>
   );
 }
