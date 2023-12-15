@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family:Arial, Helvetica, sans-serif;
 }
 
@@ -31,7 +31,6 @@ li a:hover {
     text-decoration: none;
 }
 
-/*This class was og called buttons*/
 .AcceptReject {
     display: flex;
     align-items: center;
@@ -54,7 +53,7 @@ li a:hover {
 }
 
 label {
-    /* display: block; */
+    display: block;
     margin-bottom: 8px;
 }
 
@@ -124,7 +123,7 @@ input {
     margin-top: 16px;
 }
 
-/* Matches page styling: */
+Matches page styling:
 .contact-card {
     position: relative;
     display: flex;
@@ -152,4 +151,4 @@ input {
     color: #333;
     font-weight: bold;
     font-size: larger;
-}
+} */
