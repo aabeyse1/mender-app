@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MenderdjangoConfig(AppConfig):
+class DjangoappConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'menderDjango'
+    name = 'djangoApp'
