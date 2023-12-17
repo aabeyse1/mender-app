@@ -9,7 +9,7 @@ console.log(interests);
 
 function ProfileCard(props) {
     return (
-        <Form className='px-10'>
+        <Form className='px-0'>
             <Form.Group controlId = "profileGroupEmail">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control type="text" placeholder={props.name}></Form.Control>
@@ -33,7 +33,7 @@ function ProfileCard(props) {
             <Form.Group controlId='profileGroupInterests'>
                 <Form.Label>Interests</Form.Label>
                 <InterestsSelect />
-                <Form.Text muted>Where you are from</Form.Text>
+                <Form.Text muted>Current interests</Form.Text>
             </Form.Group>
             <div className='d-flex flex-row justify-content-center'>
                 <Button variant ="primary" type ="submit">
