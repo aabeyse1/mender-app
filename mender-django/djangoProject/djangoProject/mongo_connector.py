@@ -51,7 +51,20 @@ class Match:
         mentee_matches.append(match_id)
         mentee_collection.update_one({'_id': mentee_id}, {'$set': {'matches': mentee_matches}})
 
-        return match_id     
+        return match_id    
+
+class Database:
+    def find_user(name, linkedin_username):
+        mentor = mentors_collection.find_one({'name': name, 'contact': linkedin_username})
+        mentee = mentee_collection.find_one({'name': name, 'contact': linkedin_username})
+
+        if mentor:
+            return mentor['_id'], mentor, 'mentor'
+        elif mentee:
+            return mentee['_id'], mentee, 'mentee'
+        else:
+            return None, None, None
+ 
     
 connection_string = "mongodb+srv://cluster0.yl9k9ng.mongodb.net/"
 username = "mender-admin"
