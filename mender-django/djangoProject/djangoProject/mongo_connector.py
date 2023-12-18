@@ -1,13 +1,9 @@
 from pymongo import MongoClient
+from settings import MONGO_DB_SETTINGS
 
-connection_string = "mongodb+srv://cluster0.yl9k9ng.mongodb.net/"
-username = "mender-admin"
-password = "446projxyz"   
-database_name = "mender" 
-
-# initial connection to db
-client = MongoClient(connection_string, username=username, password=password)
-mongo_db = client[database_name]
+connection_string = MONGO_DB_SETTINGS['connection_string']
+client = MongoClient(connection_string)
+mongo_db = client["mender"]
 
 
 class Mentor:

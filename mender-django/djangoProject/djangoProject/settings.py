@@ -60,6 +60,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'djangoProject.urls'
 
+MONGO_DB_SETTINGS = {
+    'connection_string': 'mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net',
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
