@@ -36,17 +36,17 @@ def generate_fake_mentee():
 # # Populate mentors collection with fake data
 # for _ in range(2):  # Generate 10 fake mentors
 #     mentor_data = generate_fake_mentor()
-#     mentor_id = Mentor.create_mentor(**mentor_data)
+#     created, mentor_id = Mentor.create_mentor(**mentor_data)
 
 # # Populate mentees collection with fake data
 # for _ in range(2):  # Generate 10 fake mentees
 #     mentee_data = generate_fake_mentee()
-#     mentee_id = Mentee.create_mentee(**mentee_data)
+#     created, mentee_id = Mentee.create_mentee(**mentee_data)
 
 
 #### TESTING CREATE MENTOR + MENTEE ###
-# mentor1 = Mentor.create_mentor('John Doe', 'MN', 'Minneapolis', 'Tech', 'Software', 'ABC Corp', 'Linkedin')
-# mentee1 = Mentee.create_mentee('Jane Smith', 'MN', 'Minneapolis', 'Tech', 'Software', 'Macalester', 'Linkedin')
+# created, mentor1 = Mentor.create_mentor('John Doe', 'MN', 'Minneapolis', 'Tech', 'Software', 'ABC Corp', 'Linkedin')
+# created, mentee1 = Mentee.create_mentee('Jane Smith', 'MN', 'Minneapolis', 'Tech', 'Software', 'Macalester', 'Linkedin')
 
 # Match.create_match(mentor1, mentee1)
 

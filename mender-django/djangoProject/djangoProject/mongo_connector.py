@@ -28,9 +28,14 @@ class Mentor:
     
     @staticmethod
     def create_mentor(name, area, hometown, interests, industry, company, contact):
+        existing_mentor = Mentor.get_mentor_collection().find_one({'name': name, 'contact': contact})
+
+        if existing_mentor:
+            return False, existing_mentor['_id']
+
         mentor = Mentor(name, area, hometown, interests, industry, company, contact, matches=None, likes=None)
         mentor_id = Mentor.get_mentor_collection().insert_one(vars(mentor)).inserted_id
-        return mentor_id
+        return True, mentor_id
     
     
 
@@ -53,9 +58,14 @@ class Mentee:
     
     @staticmethod
     def create_mentee(name, area, hometown, industry, interests, college, contact):
+        existing_mentee = Mentee.get_mentee_collection().find_one({'name': name, 'contact': contact})
+
+        if existing_mentee:
+            return False, existing_mentee['_id']
+
         mentee = Mentee(name, area, hometown, interests, industry, college, contact, matches=None, likes=None)
         mentee_id = Mentee.get_mentee_collection().insert_one(vars(mentee)).inserted_id
-        return mentee_id
+        return True, mentee_id
 
 class Match:
     def __init__(self, mentor_id, mentee_id):
@@ -95,7 +105,6 @@ class Match:
         if mentee_id in mentor_likes:
             mentor_likes.remove(mentee_id)
             Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'likes': mentor_likes}})
-
 
         return match_id    
 
