@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from settings import MONGO_DB_SETTINGS
+from .settings import MONGO_DB_SETTINGS
 
 connection_string = MONGO_DB_SETTINGS['connection_string']
 client = MongoClient(connection_string)
@@ -116,17 +116,42 @@ class Database:
         return credentials_collection
     
     @staticmethod
-    def find_user(user_id):
-        mentor = Mentor.get_mentor_collection().find_one({'_id': user_id})
-        mentee = Mentee.get_mentee_collection().find_one({'_id': user_id})
+    def find_user(user_email):
+        # mentor = Mentor.get_mentor_collection().find_one({'_id': user_id})
+        # mentor = Mentor.get_mentor_collection().find()
+        # # mentee = Mentee.get_mentee_collection().find_one({'_id': user_id})
+        # mentee = Mentee.get_mentee_collection().find()
+        # if mentor:
+        #     array = []
+        #     for document in mentor:
+        #         if (document['_id'] == user_id):
+        #             array.append(document)
+        #     return array
+        # elif mentee:
+        #     array = []
+        #     for document in mentor:
+        #         if (document['_id'] == user_id):
+        #             array.append(document)
+        #     return array
+        # else:
+        #     return None
 
-        if mentor:
-            return mentor['email']
-        elif mentee:
-            return mentee['email']
+
+        mentor_collection = Mentor.get_mentor_collection()
+        mentee_collection = Mentee.get_mentee_collection()
+
+        mentor_cursor = mentor_collection.find({'email': user_email})
+        mentee_cursor = mentee_collection.find({'email': user_email})
+
+        mentor_documents = [document for document in mentor_cursor]
+        mentee_documents = [document for document in mentee_cursor]
+
+        if mentor_documents:
+            return mentor_documents
+        elif mentee_documents:
+            return mentee_documents
         else:
             return None
-
 
     @staticmethod
     def add_like(user1_id, user2_id):
