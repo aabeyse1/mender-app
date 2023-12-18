@@ -9,13 +9,14 @@ database_name = "mender"
 client = MongoClient(connection_string, username=username, password=password)
 mongo_db = client[database_name]
 
+
 class Mentor:
     def __init__(self, name, area, hometown, interests, industry, company, contact, matches=None, likes=None):
         self.name = name
         self.company = company
         self.area = area
         self.hometown = hometown
-        self.interests = interests
+        self.interests = interests or []
         self.industry = industry
         self.contact = contact or []
         self.matches = matches or []
@@ -35,8 +36,7 @@ class Mentor:
 
         mentor = Mentor(name, area, hometown, interests, industry, company, contact, matches=None, likes=None)
         mentor_id = Mentor.get_mentor_collection().insert_one(vars(mentor)).inserted_id
-        return True, mentor_id
-    
+        return True, mentor_id  
     
 
 class Mentee:
@@ -45,7 +45,7 @@ class Mentee:
         self.area = area
         self.hometown = hometown
         self.industry = industry
-        self.interests = interests
+        self.interests = interests or []
         self.college = college
         self.contact = contact or []
         self.matches = matches or []
@@ -66,6 +66,7 @@ class Mentee:
         mentee = Mentee(name, area, hometown, interests, industry, college, contact, matches=None, likes=None)
         mentee_id = Mentee.get_mentee_collection().insert_one(vars(mentee)).inserted_id
         return True, mentee_id
+
 
 class Match:
     def __init__(self, mentor_id, mentee_id):
@@ -107,6 +108,7 @@ class Match:
             Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'likes': mentor_likes}})
 
         return match_id    
+
 
 class Database:
 
@@ -154,4 +156,29 @@ class Database:
             if user1_id in mentor_user.get('likes', []):
                 Match.create_match(user1_id, user2_id)
 
+
+    @staticmethod
+    def update_user(user_id, name, area, hometown, interests, industry, college, company, contact):
+
+        user_collection = Mentee.get_mentee_collection() if Mentee.get_mentee_collection().find_one({'_id': user_id}) else Mentor.get_mentor_collection()
+
+        existing_user = user_collection.find_one({'_id': user_id})
+        if not existing_user:
+            return False
+
+        update_query = {
+            '$set': {
+                'name': name,
+                'area': area,
+                'hometown': hometown,
+                'interests': interests,
+                'industry': industry,
+                'college': college if user_collection == Mentee.get_mentee_collection() else None,
+                'company': company if user_collection == Mentor.get_mentor_collection() else None,
+                'contact': contact,
+            }
+        }
+
+        user_collection.update_one({'_id': user_id}, update_query)
+        return True
     

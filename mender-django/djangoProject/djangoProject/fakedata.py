@@ -60,3 +60,8 @@ def generate_fake_mentee():
 ##### TESTING LIKE+MATCH #######
 # Database.add_like(Database.find_user("John Walker", "morganjim"), Database.find_user("Judy Everett", "robert16"))
 # Database.add_like(Database.find_user("Judy Everett", "robert16"), Database.find_user("John Walker", "morganjim"))
+
+
+##### TESTING UPDATE USER #####
+# user = Database.find_user('John Walker', 'morganjim')
+# Database.update_user(user, 'Jonny Walker', 'Iowa', 'Troyberg', 'Painting', 'Software', 'Macalester', None, 'morganjim')
