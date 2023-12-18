@@ -10,7 +10,7 @@ client = MongoClient(connection_string, username=username, password=password)
 mongo_db = client[database_name]
 
 class Mentor:
-    def __init__(self, name, area, hometown, interests, industry, company, contact, matches=None):
+    def __init__(self, name, area, hometown, interests, industry, company, contact, matches=None, likes=None):
         self.name = name
         self.company = company
         self.area = area
@@ -19,6 +19,7 @@ class Mentor:
         self.industry = industry
         self.contact = contact or []
         self.matches = matches or []
+        self.likes = likes or []
 
     @staticmethod
     def get_mentor_collection():
@@ -27,14 +28,14 @@ class Mentor:
     
     @staticmethod
     def create_mentor(name, area, hometown, interests, industry, company, contact):
-        mentor = Mentor(name, area, hometown, interests, industry, company, contact, matches=None)
+        mentor = Mentor(name, area, hometown, interests, industry, company, contact, matches=None, likes=None)
         mentor_id = Mentor.get_mentor_collection().insert_one(vars(mentor)).inserted_id
         return mentor_id
     
     
 
 class Mentee:
-    def __init__(self, name, area, hometown, industry, interests, college, contact, matches=None):
+    def __init__(self, name, area, hometown, industry, interests, college, contact, matches=None, likes=None):
         self.name = name
         self.area = area
         self.hometown = hometown
@@ -43,6 +44,7 @@ class Mentee:
         self.college = college
         self.contact = contact or []
         self.matches = matches or []
+        self.likes = likes or []
 
     @staticmethod
     def get_mentee_collection():
@@ -51,7 +53,7 @@ class Mentee:
     
     @staticmethod
     def create_mentee(name, area, hometown, industry, interests, college, contact):
-        mentee = Mentee(name, area, hometown, interests, industry, college, contact, matches=None)
+        mentee = Mentee(name, area, hometown, interests, industry, college, contact, matches=None, likes=None)
         mentee_id = Mentee.get_mentee_collection().insert_one(vars(mentee)).inserted_id
         return mentee_id
 
@@ -82,6 +84,19 @@ class Match:
         mentee_matches.append(match_id)
         Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'matches': mentee_matches}})
 
+        # Remove mentor mentee's like list
+        mentee_likes = mentee.get('likes', [])
+        if mentor_id in mentee_likes:
+            mentee_likes.remove(mentor_id)
+            Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'likes': mentee_likes}})
+
+        # Remove mentee from the mentor's like list
+        mentor_likes = mentor.get('likes', [])
+        if mentee_id in mentor_likes:
+            mentor_likes.remove(mentee_id)
+            Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'likes': mentor_likes}})
+
+
         return match_id    
 
 class Database:
@@ -97,8 +112,37 @@ class Database:
         mentee = Mentee.get_mentee_collection().find_one({'name': name, 'contact': linkedin_username})
 
         if mentor:
-            return mentor['_id'], mentor, 'mentor'
+            return mentor['_id']
         elif mentee:
-            return mentee['_id'], mentee, 'mentee'
+            return mentee['_id']
         else:
-            return None, None, None
+            return None
+        
+
+    @staticmethod
+    def add_like(user1_id, user2_id):
+        mentor_user = Mentor.get_mentor_collection().find_one({'_id': user1_id})
+        mentee_user = Mentee.get_mentee_collection().find_one({'_id': user1_id})
+
+        if mentor_user:
+            mentor_user_likes = mentor_user.get('likes', [])
+            if user2_id not in mentor_user_likes:
+                mentor_user_likes.append(user2_id)
+                Mentor.get_mentor_collection().update_one({'_id': user1_id}, {'$set': {'likes': mentor_user_likes}})
+            
+            # if match
+            mentee_user = Mentee.get_mentee_collection().find_one({'_id': user2_id})
+            if user1_id in mentee_user.get('likes', []):
+                Match.create_match(user1_id, user2_id)
+
+        elif mentee_user:
+            mentee_user_likes = mentee_user.get('likes', [])
+            if user2_id not in mentee_user_likes:
+                mentee_user_likes.append(user2_id)
+                Mentee.get_mentee_collection().update_one({'_id': user1_id}, {'$set': {'likes': mentee_user_likes}})
+            
+            mentor_user = Mentor.get_mentor_collection().find_one({'_id': user2_id})
+            if user1_id in mentor_user.get('likes', []):
+                Match.create_match(user1_id, user2_id)
+
+    
