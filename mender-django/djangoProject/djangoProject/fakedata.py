@@ -18,7 +18,8 @@ def generate_fake_mentor():
         'industry': fake.job(),
         'interests': fake.job(),
         'company': fake.company(),
-        'contact': fake.user_name(),
+        'email': fake.email(),
+        'linkedin': fake.user_name(),
     }
 
 def generate_fake_mentee():
@@ -29,7 +30,8 @@ def generate_fake_mentee():
         'industry': fake.job(),
         'interests': fake.job(),
         'college': fake.company(),
-        'contact': fake.user_name(),
+        'email': fake.email(),
+        'linkedin': fake.user_name(),
     }
 
 ##### CREATE NEW FAKE DATA ######
@@ -51,11 +53,17 @@ def generate_fake_mentee():
 # Match.create_match(mentor1, mentee1)
 
 ##### TESTING FINDING USER ###
-# user_id, user, user_type = Database.find_user(name='John Doe', linkedin_username='Linkedin')
+# from bson import ObjectId
+
+# user_id_str = "6580b99685e161a2b9bd5e6e" 
+# user_id = ObjectId(user_id_str)
+
+# user = Database.find_user(user_id)
 # if user:
-#     print(f"{user_type.capitalize()} found with ID {user_id}: {user}")
+#     print(f"found with ID {user}")
 # else:
 #     print("User not found")
+
 
 ##### TESTING LIKE+MATCH #######
 # Database.add_like(Database.find_user("John Walker", "morganjim"), Database.find_user("Judy Everett", "robert16"))

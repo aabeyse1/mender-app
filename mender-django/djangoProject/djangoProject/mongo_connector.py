@@ -7,14 +7,15 @@ mongo_db = client["mender"]
 
 
 class Mentor:
-    def __init__(self, name, area, hometown, interests, industry, company, contact, matches=None, likes=None):
+    def __init__(self, name, area, hometown, interests, industry, company, email, linkedin, matches=None, likes=None):
         self.name = name
         self.company = company
         self.area = area
         self.hometown = hometown
         self.interests = interests or []
         self.industry = industry
-        self.contact = contact or []
+        self.email = email
+        self.linkedin = linkedin
         self.matches = matches or []
         self.likes = likes or []
 
@@ -24,26 +25,27 @@ class Mentor:
         return mentor_collection
     
     @staticmethod
-    def create_mentor(name, area, hometown, interests, industry, company, contact):
-        existing_mentor = Mentor.get_mentor_collection().find_one({'name': name, 'contact': contact})
+    def create_mentor(name, area, hometown, interests, industry, company, email, linkedin):
+        existing_mentor = Mentor.get_mentor_collection().find_one({'name': name, 'email': email})
 
         if existing_mentor:
             return False, existing_mentor['_id']
 
-        mentor = Mentor(name, area, hometown, interests, industry, company, contact, matches=None, likes=None)
+        mentor = Mentor(name, area, hometown, interests, industry, company, email, linkedin, matches=None, likes=None)
         mentor_id = Mentor.get_mentor_collection().insert_one(vars(mentor)).inserted_id
         return True, mentor_id  
     
 
 class Mentee:
-    def __init__(self, name, area, hometown, industry, interests, college, contact, matches=None, likes=None):
+    def __init__(self, name, area, hometown, industry, interests, college, email, linkedin, matches=None, likes=None):
         self.name = name
         self.area = area
         self.hometown = hometown
         self.industry = industry
         self.interests = interests or []
         self.college = college
-        self.contact = contact or []
+        self.email = email 
+        self.linkedin = linkedin
         self.matches = matches or []
         self.likes = likes or []
 
@@ -53,13 +55,13 @@ class Mentee:
         return mentee_collection
     
     @staticmethod
-    def create_mentee(name, area, hometown, industry, interests, college, contact):
-        existing_mentee = Mentee.get_mentee_collection().find_one({'name': name, 'contact': contact})
+    def create_mentee(name, area, hometown, industry, interests, college, email, linkedin):
+        existing_mentee = Mentee.get_mentee_collection().find_one({'name': name, 'email': email})
 
         if existing_mentee:
             return False, existing_mentee['_id']
 
-        mentee = Mentee(name, area, hometown, interests, industry, college, contact, matches=None, likes=None)
+        mentee = Mentee(name, area, hometown, interests, industry, college, email,linkedin, matches=None, likes=None)
         mentee_id = Mentee.get_mentee_collection().insert_one(vars(mentee)).inserted_id
         return True, mentee_id
 
@@ -114,17 +116,17 @@ class Database:
         return credentials_collection
     
     @staticmethod
-    def find_user(name, linkedin_username):
-        mentor = Mentor.get_mentor_collection().find_one({'name': name, 'contact': linkedin_username})
-        mentee = Mentee.get_mentee_collection().find_one({'name': name, 'contact': linkedin_username})
+    def find_user(user_id):
+        mentor = Mentor.get_mentor_collection().find_one({'_id': user_id})
+        mentee = Mentee.get_mentee_collection().find_one({'_id': user_id})
 
         if mentor:
-            return mentor['_id']
+            return mentor['email']
         elif mentee:
-            return mentee['_id']
+            return mentee['email']
         else:
             return None
-        
+
 
     @staticmethod
     def add_like(user1_id, user2_id):
@@ -154,7 +156,7 @@ class Database:
 
 
     @staticmethod
-    def update_user(user_id, name, area, hometown, interests, industry, college, company, contact):
+    def update_user(user_id, name, area, hometown, interests, industry, college, company, email, linkedin):
 
         user_collection = Mentee.get_mentee_collection() if Mentee.get_mentee_collection().find_one({'_id': user_id}) else Mentor.get_mentor_collection()
 
@@ -171,7 +173,8 @@ class Database:
                 'industry': industry,
                 'college': college if user_collection == Mentee.get_mentee_collection() else None,
                 'company': company if user_collection == Mentor.get_mentor_collection() else None,
-                'contact': contact,
+                'email': email,
+                'linkedin': linkedin,
             }
         }
 
