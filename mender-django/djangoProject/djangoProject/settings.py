@@ -60,6 +60,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'djangoProject.urls'
 
+MONGO_DB_SETTINGS = {
+    'connection_string': 'mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net',
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,17 +81,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
