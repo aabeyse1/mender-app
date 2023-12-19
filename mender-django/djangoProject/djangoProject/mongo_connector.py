@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from .settings import MONGO_DB_SETTINGS
+from settings import MONGO_DB_SETTINGS
 import certifi;
 
 print(f"Using certifi version: {certifi.where()}")
@@ -18,9 +18,10 @@ mongo_db = client["mender"]
 
 
 class Mentor:
-    def __init__(self, name, area, hometown, interests, industry, company, email, linkedin, matches=None, likes=None):
+    def __init__(self, name, area, hometown, interests, industry, company, college, email, linkedin, matches=None, likes=None):
         self.name = name
         self.company = company
+        self.college = college
         self.area = area
         self.hometown = hometown
         self.interests = interests or []
@@ -36,24 +37,24 @@ class Mentor:
         return mentor_collection
     
     @staticmethod
-    def create_mentor(name, area, hometown, interests, industry, company, email, linkedin):
+    def create_mentor(name, area, hometown, interests, industry, company, college, email, linkedin):
         existing_mentor = Mentor.get_mentor_collection().find_one({'name': name, 'email': email})
 
         if existing_mentor:
             return False, existing_mentor['_id']
 
-        mentor = Mentor(name, area, hometown, interests, industry, company, email, linkedin, matches=None, likes=None)
+        mentor = Mentor(name, area, hometown, interests, industry, company, college, email, linkedin, matches=None, likes=None)
         mentor_id = Mentor.get_mentor_collection().insert_one(vars(mentor)).inserted_id
         return True, mentor_id  
     
 
 class Mentee:
-    def __init__(self, name, area, hometown, industry, interests, college, email, linkedin, matches=None, likes=None):
+    def __init__(self, name, area, hometown, interests, industry, college, email, linkedin, matches=None, likes=None):
         self.name = name
         self.area = area
         self.hometown = hometown
-        self.industry = industry
         self.interests = interests or []
+        self.industry = industry
         self.college = college
         self.email = email 
         self.linkedin = linkedin
@@ -284,7 +285,7 @@ class Database:
                 'hometown': hometown,
                 'interests': interests,
                 'industry': industry,
-                'college': college if user_collection == Mentee.get_mentee_collection() else None,
+                'college': college,
                 'company': company if user_collection == Mentor.get_mentor_collection() else None,
                 'email': email,
                 'linkedin': linkedin,
