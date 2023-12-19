@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from settings import MONGO_DB_SETTINGS
+from .settings import MONGO_DB_SETTINGS
 import certifi;
 
 print(f"Using certifi version: {certifi.where()}")
