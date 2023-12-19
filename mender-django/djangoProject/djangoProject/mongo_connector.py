@@ -90,31 +90,36 @@ class Match:
         match = Match(mentor_email=mentor_email, mentee_email=mentee_email)
         match_id = Match.get_matches_collection().insert_one(vars(match)).inserted_id
 
-        # Update the mentor's matches list
+        # Update mentor's matches list and remove mentee from likes
         mentor = Mentor.get_mentor_collection().find_one({'email': mentor_email})
-        mentor_matches = mentor.get('matches', [])
-        mentor_matches.append(match_id)
-        Mentor.get_mentor_collection().update_one({'email': mentor_email}, {'$set': {'matches': mentor_matches}})
+        if mentor:
+            mentor_matches = mentor.get('matches', [])
+            mentor_matches.append(mentee_email)
+            mentor_likes = mentor.get('likes', [])
+            if mentee_email in mentor_likes:
+                mentor_likes.remove(mentee_email)
 
-        # Update the mentee's matches list
+            Mentor.get_mentor_collection().update_one(
+                {'_id': mentor['_id']},
+                {'$set': {'matches': mentor_matches, 'likes': mentor_likes}}
+            )
+
+        # Update mentee's matches list and remove mentor from likes
         mentee = Mentee.get_mentee_collection().find_one({'email': mentee_email})
-        mentee_matches = mentee.get('matches', [])
-        mentee_matches.append(match_id)
-        Mentee.get_mentee_collection().update_one({'email': mentee_email}, {'$set': {'matches': mentee_matches}})
+        if mentee:
+            mentee_matches = mentee.get('matches', [])
+            mentee_matches.append(mentor_email)
+            mentee_likes = mentee.get('likes', [])
+            if mentor_email in mentee_likes:
+                mentee_likes.remove(mentor_email)
 
-        # Remove mentor mentee's like list
-        mentee_likes = mentee.get('likes', [])
-        if mentor_email in mentee_likes:
-            mentee_likes.remove(mentor_email)
-            Mentee.get_mentee_collection().update_one({'email': mentee_email}, {'$set': {'likes': mentee_likes}})
+            Mentee.get_mentee_collection().update_one(
+                {'_id': mentee['_id']},
+                {'$set': {'matches': mentee_matches, 'likes': mentee_likes}}
+            )
 
-        # Remove mentee from the mentor's like list
-        mentor_likes = mentor.get('likes', [])
-        if mentee_email in mentor_likes:
-            mentor_likes.remove(mentee_email)
-            Mentor.get_mentor_collection().update_one({'email': mentor_email}, {'$set': {'likes': mentor_likes}})
+        return match_id
 
-        return match_id    
 
 
 class Database:
@@ -169,7 +174,7 @@ class Database:
             mentor_user_likes = mentor_user.get('likes', [])
             if user2_email not in mentor_user_likes:
                 mentor_user_likes.append(user2_email)
-                Mentor.get_mentor_collection().update_one({'email': user1_email}, {'$set': {'likes': mentor_user_likes}})
+                Mentor.get_mentor_collection().update_one({'_id': mentor_user['_id']}, {'$set': {'likes': mentor_user_likes}})
             
             # if match
             mentee_user = Mentee.get_mentee_collection().find_one({'email': user2_email})
@@ -181,7 +186,7 @@ class Database:
             mentee_user_likes = mentee_user.get('likes', [])
             if user2_email not in mentee_user_likes:
                 mentee_user_likes.append(user2_email)
-                Mentee.get_mentee_collection().update_one({'email': user1_email}, {'$set': {'likes': mentee_user_likes}})
+                Mentee.get_mentee_collection().update_one({'_id': mentee_user['_id']}, {'$set': {'likes': mentee_user_likes}})
             
             mentor_user = Mentor.get_mentor_collection().find_one({'email': user2_email})
             if user1_email in mentor_user.get('likes', []):
@@ -189,6 +194,7 @@ class Database:
                 return True
         
         return False
+
 
     @staticmethod
     def update_user(name, area, hometown, interests, industry, college, company, email, linkedin):
@@ -212,7 +218,7 @@ class Database:
             }
         }
 
-        user_collection.update_one({'email': email}, update_query)
+        user_collection.update_one({'_id': existing_user['_id']}, update_query)
         return True
     
     @staticmethod
