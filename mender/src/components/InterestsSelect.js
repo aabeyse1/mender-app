@@ -25,8 +25,5 @@ function InterestsSelect({selectedInterests}) {
       );
 } 
 
-InterestsSelect.defaultProps = {
-    selectedInterests: ['Environmental Design'],
-}
 
 export default InterestsSelect;

@@ -29,7 +29,7 @@ function TopNavBar(props) {
               <Row>
                 <Col>
                   <Navbar.Text>
-                    You are currently a mentor
+                    
                   </Navbar.Text>
                 </Col>
               </Row>

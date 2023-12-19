@@ -35,7 +35,7 @@ function App() {
     const loadUserData = async () => {
       const registrationCheckResponse = await axios.get('http://127.0.0.1:8000/get/'+login.email+'/');
       if (registrationCheckResponse.data === null) {
-        navigate('/profile');
+        // navigate('/profile');
       } else {
         setUserData(registrationCheckResponse.data[0]);
         setIsUserDataLoaded(true);
