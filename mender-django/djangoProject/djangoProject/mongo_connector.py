@@ -118,8 +118,6 @@ class Match:
                 {'$set': {'matches': mentee_matches, 'likes': mentee_likes}}
             )
 
-        return match_id
-
 
 
 class Database:
