@@ -6,5 +6,6 @@ urlpatterns = [
     path('add_mentor/', views.add_person_mentor, name='addMentor'),
     path ('get/<str:email>/', views.retrieveUser),
     path ('get/moreUsers/<str:email>/', views.retrieveUsers),
-    path ('like/<str:email1>/<str:email2>/', views.like)
+    path ('like/<str:email1>/<str:email2>/', views.like),
+    path('updateUser/<str:email>', views.updateUser)
 ]
