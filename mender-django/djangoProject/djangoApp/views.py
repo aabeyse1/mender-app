@@ -72,6 +72,29 @@ def retrieveUser(request, email):
 
 def retrieveUsers(request, email):
     users = Database.getUsers(email)
-    for user in users:
-            user.pop('_id', None)
-    return JsonResponse(users, safe=False)
+    return JsonResponse(users)
+
+
+def like(request, email1, email2):
+    # if request.method == 'GET':
+    print(email1)
+    print(email2)
+    match_successful = Database.add_like(email1, email2)
+    print(match_successful)
+    return JsonResponse(match_successful, safe=False)
+
+def updateUser(request, email):
+    data = request.POST
+    name = data.get('name')
+    area = data.get('area')
+    hometown = data.get('hometown')
+    industry = data.get('industry')
+    interests = data.get('interests')
+    college = data.get('college')
+    company = data.get('company')
+    linkedin = data.get('linkedin')
+
+
+    success = Database.update_user(name, area, hometown, industry, interests, college, company, email, linkedin)
+
+    return success

@@ -162,32 +162,110 @@ class Database:
         else:
             return None
 
+    # @staticmethod
+    # def add_like(user1_email, user2_email):
+    #     mentor_user = Mentor.get_mentor_collection().find_one({'email': user1_email})
+    #     mentee_user = Mentee.get_mentee_collection().find_one({'email': user1_email})
+
+    #     if mentor_user:
+    #         mentor_user_likes = mentor_user.get('likes', [])
+    #         if user2_email not in mentor_user_likes:
+    #             mentor_user_likes.append(user2_email)
+    #             Mentor.get_mentor_collection().update_one({'_id': mentor_user['_id']}, {'$set': {'likes': mentor_user_likes}})
+
+    #         # if match
+    #         mentee_user = Mentee.get_mentee_collection().find_one({'email': user2_email})
+    #         if user1_email in mentee_user.get('likes', []):
+    #             Match.create_match(user1_email, user2_email)
+    #             return True
+
+    #     elif mentee_user:
+    #         mentee_user_likes = mentee_user.get('likes', [])
+    #         if user2_email not in mentee_user_likes:
+    #             mentee_user_likes.append(user2_email)
+    #             Mentee.get_mentee_collection().update_one({'_id': mentee_user['_id']}, {'$set': {'likes': mentee_user_likes}})
+    #         mentor_user = Mentor.get_mentor_collection().find_one({'email': user2_email})
+    #         if user1_email in mentor_user.get('likes', []):
+    #             Match.create_match(user1_email, user2_email)
+    #             return True
+        
+    #     return False
+
+    # @staticmethod
+    # def add_like(user1_id, user2_id):
+    #     mentor_user = Mentor.get_mentor_collection().find_one({'_id': user1_id})
+    #     mentee_user = Mentee.get_mentee_collection().find_one({'_id': user1_id})
+
+    #     print(f"mentor_user: {mentor_user}")
+    #     print(f"mentee_user: {mentee_user}")
+
+    #     if mentor_user:
+    #         mentor_user_likes = mentor_user.get('likes', [])
+    #         print(f"mentor_user_likes: {mentor_user_likes}")
+
+    #         if user2_email not in mentor_user_likes:
+    #             mentor_user_likes.append(user2_email)
+    #             Mentor.get_mentor_collection().update_one({'_id': mentor_user['_id']}, {'$set': {'likes': mentor_user_likes}})
+
+    #         # if match
+    #         mentee_user = Mentee.get_mentee_collection().find_one({'email': user2_email})
+    #         print(f"mentee_user_likes: {mentee_user.get('likes', [])}")
+    #         if user1_email in mentee_user.get('likes', []):
+    #             Match.create_match(user1_email, user2_email)
+    #             return True
+
+    #     elif mentee_user:
+    #         mentee_user_likes = mentee_user.get('likes', [])
+    #         print(f"mentee_user_likes: {mentee_user_likes}")
+    #         if user2_email not in mentee_user_likes:
+    #             mentee_user_likes.append(user2_email)
+    #             Mentee.get_mentee_collection().update_one({'_id': mentee_user['_id']}, {'$set': {'likes': mentee_user_likes}})
+    #         mentor_user = Mentor.get_mentor_collection().find_one({'email': user2_email})
+    #         print(f"mentor_user_likes: {mentor_user.get('likes', [])}")
+    #         if user1_email in mentor_user.get('likes', []):
+    #             Match.create_match(user1_email, user2_email)
+    #             return True
+        
+    #     return False
+
     @staticmethod
-    def add_like(user1_id, user2_id):
-        mentor_user = Mentor.get_mentor_collection().find_one({'_id': user1_id})
-        mentee_user = Mentee.get_mentee_collection().find_one({'_id': user1_id})
+    def add_like(user1_email, user2_email):
+        mentor_user = Mentor.get_mentor_collection().find_one({'email': user1_email})
+        mentee_user = Mentee.get_mentee_collection().find_one({'email': user2_email})
+
+        print(f"mentor_user: {mentor_user}")
+        print(f"mentee_user: {mentee_user}")
 
         if mentor_user:
             mentor_user_likes = mentor_user.get('likes', [])
-            if user2_id not in mentor_user_likes:
-                mentor_user_likes.append(user2_id)
-                Mentor.get_mentor_collection().update_one({'_id': user1_id}, {'$set': {'likes': mentor_user_likes}})
-            
-            # if match
-            mentee_user = Mentee.get_mentee_collection().find_one({'_id': user2_id})
-            if user1_id in mentee_user.get('likes', []):
-                Match.create_match(user1_id, user2_id)
+            if user2_email not in mentor_user_likes:
+                mentor_user_likes.append(user2_email)
+                Mentor.get_mentor_collection().update_one(
+                    {'_id': mentor_user['_id']},
+                    {'$set': {'likes': mentor_user_likes}}
+                )
+
+            mentee_user_likes = mentee_user.get('likes', [])
+            if user1_email in mentee_user_likes:
+                Match.create_match(user1_email, user2_email)
+                return True
 
         elif mentee_user:
             mentee_user_likes = mentee_user.get('likes', [])
-            if user2_id not in mentee_user_likes:
-                mentee_user_likes.append(user2_id)
-                Mentee.get_mentee_collection().update_one({'_id': user1_id}, {'$set': {'likes': mentee_user_likes}})
-            
-            mentor_user = Mentor.get_mentor_collection().find_one({'_id': user2_id})
-            if user1_id in mentor_user.get('likes', []):
-                Match.create_match(user1_id, user2_id)
+            if user1_email not in mentee_user_likes:
+                mentee_user_likes.append(user1_email)
+                Mentee.get_mentee_collection().update_one(
+                    {'_id': mentee_user['_id']},
+                    {'$set': {'likes': mentee_user_likes}}
+                )
 
+            mentor_user = Mentor.get_mentor_collection().find_one({'email': user2_email})
+            mentor_user_likes = mentor_user.get('likes', [])
+            if user1_email in mentor_user_likes:
+                Match.create_match(user1_email, user2_email)
+                return True
+
+        return False
 
     @staticmethod
     def update_user(user_id, name, area, hometown, interests, industry, college, company, email, linkedin):
