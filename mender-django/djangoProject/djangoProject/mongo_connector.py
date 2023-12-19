@@ -76,9 +76,9 @@ class Mentee:
 
 
 class Match:
-    def __init__(self, mentor_id, mentee_id):
-        self.mentor_id = mentor_id
-        self.mentee_id = mentee_id  
+    def __init__(self, mentor_email, mentee_email):
+        self.mentor_email = mentor_email
+        self.mentee_email = mentee_email  
 
     @staticmethod
     def get_matches_collection():
@@ -86,33 +86,33 @@ class Match:
         return match_collection
 
     @staticmethod
-    def create_match(mentor_id, mentee_id):
-        match = Match(mentor_id=mentor_id, mentee_id=mentee_id)
+    def create_match(mentor_email, mentee_email):
+        match = Match(mentor_email=mentor_email, mentee_email=mentee_email)
         match_id = Match.get_matches_collection().insert_one(vars(match)).inserted_id
 
         # Update the mentor's matches list
-        mentor = Mentor.get_mentor_collection().find_one({'_id': mentor_id})
+        mentor = Mentor.get_mentor_collection().find_one({'email': mentor_email})
         mentor_matches = mentor.get('matches', [])
         mentor_matches.append(match_id)
-        Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'matches': mentor_matches}})
+        Mentor.get_mentor_collection().update_one({'email': mentor_email}, {'$set': {'matches': mentor_matches}})
 
         # Update the mentee's matches list
-        mentee = Mentee.get_mentee_collection().find_one({'_id': mentee_id})
+        mentee = Mentee.get_mentee_collection().find_one({'email': mentee_email})
         mentee_matches = mentee.get('matches', [])
         mentee_matches.append(match_id)
-        Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'matches': mentee_matches}})
+        Mentee.get_mentee_collection().update_one({'email': mentee_email}, {'$set': {'matches': mentee_matches}})
 
         # Remove mentor mentee's like list
         mentee_likes = mentee.get('likes', [])
-        if mentor_id in mentee_likes:
-            mentee_likes.remove(mentor_id)
-            Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'likes': mentee_likes}})
+        if mentor_email in mentee_likes:
+            mentee_likes.remove(mentor_email)
+            Mentee.get_mentee_collection().update_one({'email': mentee_email}, {'$set': {'likes': mentee_likes}})
 
         # Remove mentee from the mentor's like list
         mentor_likes = mentor.get('likes', [])
-        if mentee_id in mentor_likes:
-            mentor_likes.remove(mentee_id)
-            Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'likes': mentor_likes}})
+        if mentee_email in mentor_likes:
+            mentor_likes.remove(mentee_email)
+            Mentor.get_mentor_collection().update_one({'email': mentor_email}, {'$set': {'likes': mentor_likes}})
 
         return match_id    
 
@@ -169,10 +169,10 @@ class Database:
             mentor_user_likes = mentor_user.get('likes', [])
             if user2_email not in mentor_user_likes:
                 mentor_user_likes.append(user2_email)
-                Mentor.get_mentor_collection().update_one({'_id': user1_email}, {'$set': {'likes': mentor_user_likes}})
+                Mentor.get_mentor_collection().update_one({'email': user1_email}, {'$set': {'likes': mentor_user_likes}})
             
             # if match
-            mentee_user = Mentee.get_mentee_collection().find_one({'_id': user2_email})
+            mentee_user = Mentee.get_mentee_collection().find_one({'email': user2_email})
             if user1_email in mentee_user.get('likes', []):
                 Match.create_match(user1_email, user2_email)
                 return True
@@ -181,9 +181,9 @@ class Database:
             mentee_user_likes = mentee_user.get('likes', [])
             if user2_email not in mentee_user_likes:
                 mentee_user_likes.append(user2_email)
-                Mentee.get_mentee_collection().update_one({'_id': user1_email}, {'$set': {'likes': mentee_user_likes}})
+                Mentee.get_mentee_collection().update_one({'email': user1_email}, {'$set': {'likes': mentee_user_likes}})
             
-            mentor_user = Mentor.get_mentor_collection().find_one({'_id': user2_email})
+            mentor_user = Mentor.get_mentor_collection().find_one({'email': user2_email})
             if user1_email in mentor_user.get('likes', []):
                 Match.create_match(user1_email, user2_email)
                 return True
@@ -191,11 +191,11 @@ class Database:
         return False
 
     @staticmethod
-    def update_user(user_id, name, area, hometown, interests, industry, college, company, email, linkedin):
+    def update_user(name, area, hometown, interests, industry, college, company, email, linkedin):
 
-        user_collection = Mentee.get_mentee_collection() if Mentee.get_mentee_collection().find_one({'_id': user_id}) else Mentor.get_mentor_collection()
+        user_collection = Mentee.get_mentee_collection() if Mentee.get_mentee_collection().find_one({'email': email}) else Mentor.get_mentor_collection()
 
-        existing_user = user_collection.find_one({'_id': user_id})
+        existing_user = user_collection.find_one({'email': email})
         if not existing_user:
             return False
 
@@ -208,12 +208,11 @@ class Database:
                 'industry': industry,
                 'college': college,
                 'company': company if user_collection == Mentor.get_mentor_collection() else None,
-                'email': email,
                 'linkedin': linkedin,
             }
         }
 
-        user_collection.update_one({'_id': user_id}, update_query)
+        user_collection.update_one({'email': email}, update_query)
         return True
     
     @staticmethod
@@ -230,18 +229,18 @@ class Database:
         return [user[0] for user in sorted_users[:num_users]]
 
     @staticmethod
-    def get_users_from_opposite_collection(target_user_id):
-        mentor = Mentor.get_mentor_collection().find_one({'_id': target_user_id})
-        mentee = Mentee.get_mentee_collection().find_one({'_id': target_user_id})
+    def get_users_from_opposite_collection(target_user_email):
+        mentor = Mentor.get_mentor_collection().find_one({'email': target_user_email})
+        mentee = Mentee.get_mentee_collection().find_one({'email': target_user_email})
 
         if mentor:
             opposite_collection = Mentee.get_mentee_collection()
         elif mentee:
             opposite_collection = Mentor.get_mentor_collection()
         else:
-            raise ValueError("Invalid user ID")
+            raise ValueError("Invalid user Email")
 
-        opposite_users = list(opposite_collection.find({'_id': {'$ne': target_user_id}}))
+        opposite_users = list(opposite_collection.find({'email': {'$ne': target_user_email}}))
         opposite_users_dicts = [dict(user) for user in opposite_users]
 
         return opposite_users_dicts
