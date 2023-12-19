@@ -88,35 +88,35 @@ class Match:
         return match_collection
 
     @staticmethod
-    def create_match(mentor_id, mentee_id):
-        match = Match(mentor_id=mentor_id, mentee_id=mentee_id)
+    def create_match(mentor_email, mentee_email):
+        match = Match(mentor_email=mentor_email, mentee_email=mentee_email)
         match_id = Match.get_matches_collection().insert_one(vars(match)).inserted_id
 
-        # Update the mentor's matches list
-        mentor = Mentor.get_mentor_collection().find_one({'_id': mentor_id})
-        mentor_matches = mentor.get('matches', [])
-        mentor_matches.append(match_id)
-        Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'matches': mentor_matches}})
+        mentor = Mentor.get_mentor_collection().find_one({'email': mentor_email})
+        if mentor:
+            mentor_matches = mentor.get('matches', [])
+            mentor_matches.append(mentee_email)
+            mentor_likes = mentor.get('likes', [])
+            if mentee_email in mentor_likes:
+                mentor_likes.remove(mentee_email)
 
-        # Update the mentee's matches list
-        mentee = Mentee.get_mentee_collection().find_one({'_id': mentee_id})
-        mentee_matches = mentee.get('matches', [])
-        mentee_matches.append(match_id)
-        Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'matches': mentee_matches}})
+            Mentor.get_mentor_collection().update_one(
+                {'_id': mentor['_id']},
+                {'$set': {'matches': mentor_matches, 'likes': mentor_likes}}
+            )
 
-        # Remove mentor mentee's like list
-        mentee_likes = mentee.get('likes', [])
-        if mentor_id in mentee_likes:
-            mentee_likes.remove(mentor_id)
-            Mentee.get_mentee_collection().update_one({'_id': mentee_id}, {'$set': {'likes': mentee_likes}})
+        mentee = Mentee.get_mentee_collection().find_one({'email': mentee_email})
+        if mentee:
+            mentee_matches = mentee.get('matches', [])
+            mentee_matches.append(mentor_email)
+            mentee_likes = mentee.get('likes', [])
+            if mentor_email in mentee_likes:
+                mentee_likes.remove(mentor_email)
 
-        # Remove mentee from the mentor's like list
-        mentor_likes = mentor.get('likes', [])
-        if mentee_id in mentor_likes:
-            mentor_likes.remove(mentee_id)
-            Mentor.get_mentor_collection().update_one({'_id': mentor_id}, {'$set': {'likes': mentor_likes}})
-
-        return match_id    
+            Mentee.get_mentee_collection().update_one(
+                {'_id': mentee['_id']},
+                {'$set': {'matches': mentee_matches, 'likes': mentee_likes}}
+            )
 
 
 class Database:
