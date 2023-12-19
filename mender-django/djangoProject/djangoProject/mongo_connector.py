@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from settings import MONGO_DB_SETTINGS
+from .settings import MONGO_DB_SETTINGS
 import certifi;
 
 print(f"Using certifi version: {certifi.where()}")
@@ -151,8 +151,8 @@ class Database:
         mentor_collection = Mentor.get_mentor_collection()
         mentee_collection = Mentee.get_mentee_collection()
 
-        mentor_cursor = mentor_collection.find().limit(20)
-        mentee_cursor = mentee_collection.find().limit(20)
+        mentor_cursor = mentor_collection.find().limit(50)
+        mentee_cursor = mentee_collection.find().limit(50)
 
         mentor_documents = [document for document in mentor_cursor]
         mentee_documents = [document for document in mentee_cursor]

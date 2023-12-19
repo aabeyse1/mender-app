@@ -85,11 +85,7 @@ def like(request, email1, email2):
     print(match_successful)
     return JsonResponse(match_successful, safe=False)
 
-<<<<<<< Updated upstream
-def updateUser(request, email, name, location, college, company, hometown, industry, interests, linkedin):
-    success = Database.update_user(name, location, hometown, industry, interests, college, company, email, linkedin)
-=======
-def updateUser(request, email, bane==):
+def updateUser(request, emai):
     name = data.get('name')
     area = data.get('area')
     hometown = data.get('hometown')
@@ -102,5 +98,4 @@ def updateUser(request, email, bane==):
 
     success = Database.update_user(name, area, hometown, industry, interests, college, company, email, linkedin)
 
->>>>>>> Stashed changes
     return success

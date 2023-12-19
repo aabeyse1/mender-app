@@ -3,6 +3,7 @@ import TinderCard from 'react-tinder-card';
 import {Container, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { ButtonGroup } from 'react-bootstrap'
 // import './Cards.css'
 
 
@@ -107,7 +108,7 @@ function Cards (props) {
         {db.map((character, index) => (
           <TinderCard
             ref={childRefs[index]}
-            className='swipe rounded bg-primary position-absolute w-50 h-50 px-5 py-5'
+            className='swipe rounded bg-primary position-absolute w-50 h-70 px-5 py-5'
             key={character.name}
             onSwipe={(dir) => swiped(dir, character.name, index)}
             onCardLeftScreen={() => outOfFrame(character.name, index)}
@@ -118,13 +119,26 @@ function Cards (props) {
             <ul>
               <h3 className='text-light'>College: {character.college}</h3>
               <h3 className='text-light'>Hometown: {character.hometown}</h3>
-              <h3 className='text-light'>Interests: {character.interests}</h3>
+              <h3 className='text-light'>Industry: {character.industry}</h3>
+              <h3 className='text-light'>Interests:</h3>
+              <ButtonGroup>
+                {character.interests.map((interest, index) => (
+                  <Button
+                    key={index}
+                    className="mx-1 shadow"
+                    variant="primary"
+                    style={{background: 'linear-gradient(to right, #4e8cff, #ff5e62)'}}
+                  >
+                    {interest}
+                  </Button>
+                ))}
+              </ButtonGroup>
             </ul>
           </TinderCard>
         ))}
       </div>
       <div className='d-flex justify-content-center mt-1'>
-        <Button className ="mx-1 shadow" variant={canSwipe ? "success" : "outline-success"} onClick={() => swipe('left')}>
+        <Button className ="mx-1 shadow" variant={canSwipe ? "danger" : "outline-danger"} onClick={() => swipe('left')}>
             <h2>
                 Swipe left!
             </h2>
@@ -134,7 +148,7 @@ function Cards (props) {
                 Undo swipe!
             </h2>
         </Button>
-        <Button  className ="mx-1 shadow" variant={canSwipe ? "danger" : "outline-danger"} onClick={() => swipe('right')}>
+        <Button  className ="mx-1 shadow" variant={canSwipe ? "success" : "outline-success"} onClick={() => swipe('right')}>
             <h2>
                 Swipe right!
             </h2>
