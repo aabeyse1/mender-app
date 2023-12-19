@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from djangoProject.mongo_connector import Database, Mentee, Mentor
 
 def add_person_mentee(request):
@@ -62,8 +62,10 @@ def add_person_mentor(request):
 def retrieveUser(request, email):
     emailToFind = email
     userInfo = Database.find_user(emailToFind)
-    return HttpResponse(userInfo)
+    # return HttpResponse(userInfo)
+    return JsonResponse(userInfo)
 
 def retrieveUsers(request, email):
     users = Database.getUsers(email)
-    return HttpResponse(users)
+    # return HttpResponse(users)
+    return JsonResponse(users)
