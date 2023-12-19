@@ -72,7 +72,9 @@ def retrieveUser(request, email):
 
 def retrieveUsers(request, email):
     users = Database.getUsers(email)
-    return JsonResponse(users)
+    for user in users:
+            user.pop('_id', None)
+    return JsonResponse(users, safe=False)
 
 
 def like(request, email1, email2):

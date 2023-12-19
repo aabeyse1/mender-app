@@ -8,7 +8,7 @@ import MatchzonePage from './pages/MatchzonePage';
 import TopNavBar from './components/TopNavBar';
 import BotNavBar from './components/BotNavBar';
 import { GoogleLogin } from 'react-google-login';
-import LoginPane from './components/LoginPane';
+import LoginPane from './pages/LoginPane';
 import axios from 'axios';
 import LoginContext from './LoginContext';
 
@@ -63,10 +63,6 @@ function App() {
 
   return (
     <div
-      style={{
-        background: 'linear-gradient(to bottom, #ffffff, #f0f0f0)',
-        minHeight: '90vh',
-      }}
     >
       {Object.keys(login).length === 0 && <LoginPane></LoginPane>}
       {Object.keys(login).length > 0 && (

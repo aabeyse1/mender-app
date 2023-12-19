@@ -56,20 +56,44 @@ function Cards (props) {
 
   const outOfFrame = (name, idx) => {
     console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current)
-    // handle the case in which go back is pressed before card goes outOfFrame
     currentIndexRef.current >= idx && childRefs[idx].current.restoreCard()
-    // TODO: when quickly swipe and restore multiple times the same card,
-    // it happens multiple outOfFrame events are queued and the card disappear
-    // during latest swipes. Only the last outOfFrame event should be considered valid
+
   }
 
   const swipe = async (dir) => {
     if (canSwipe && currentIndex < db.length) {
-      await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
+      await childRefs[currentIndex].current.swipe(dir);
+  
+      if (dir === 'right') {
+        const currentCardData = db[currentIndex];
+        console.log(db[currentIndex]);
+  
+        try {
+          await axios.get('http://127.0.0.1:8000/like/'+props.email+"/"+currentCardData.email+'/');
+        } catch (error) {
+          console.error('Error making swipe right GET request:', error);
+        }
+      }
     }
   }
 
-  // increase current index and show card
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        swipe('left');
+      } else if (e.key === 'ArrowRight') {
+        swipe('right');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [swipe]);
+  
+
   const goBack = async () => {
     if (!canGoBack) return
     const newIndex = currentIndex + 1
@@ -78,7 +102,7 @@ function Cards (props) {
   }
 
   return (
-    <div className='justify-content-center align-items-center' style={{width: "100vw", height: "100vh"}}>
+    <div className='justify-content-center align-items-center' style={{width: "100vw", height: "80vh"}}>
       <div className='d-flex align-items-center justify-content-center position-relative' style={{width: "100%", height: "80%"}}>
         {db.map((character, index) => (
           <TinderCard
