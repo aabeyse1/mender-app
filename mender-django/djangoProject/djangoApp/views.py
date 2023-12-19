@@ -1,15 +1,5 @@
-import json
-from django.shortcuts import render
-
-# Create your views here.
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import HttpResponse, JsonResponse
-from .models import menteeCollection
-from .models import mentorCollection
-from djangoProject.mongo_connector import Database, mongo_db, Mentee, Mentor
-from bson.objectid import ObjectId
-
+from django.http import HttpResponse
+from djangoProject.mongo_connector import Database, Mentee, Mentor
 
 def add_person_mentee(request):
     data = request.POST
