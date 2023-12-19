@@ -1,9 +1,20 @@
 from pymongo import MongoClient
 from .settings import MONGO_DB_SETTINGS
+import certifi;
+
+print(f"Using certifi version: {certifi.where()}")
 
 connection_string = MONGO_DB_SETTINGS['connection_string']
-client = MongoClient(connection_string)
+client = MongoClient(connection_string, tlsCAFile=certifi.where(),)
 mongo_db = client["mender"]
+
+# connection_string = "mongodb+srv://cluster0.yl9k9ng.mongodb.net/"
+# username = "mender-admin"
+# password = "446projxyz"
+# database_name = "mender" 
+
+# client = MongoClient(connection_string, username=username, password=password)
+# mongo_db = client[database_name]
 
 
 class Mentor:
@@ -138,8 +149,8 @@ class Database:
         mentor_collection = Mentor.get_mentor_collection()
         mentee_collection = Mentee.get_mentee_collection()
 
-        mentor_cursor = mentor_collection.find().limit(4)
-        mentee_cursor = mentee_collection.find().limit(4)
+        mentor_cursor = mentor_collection.find().limit(20)
+        mentee_cursor = mentee_collection.find().limit(20)
 
         mentor_documents = [document for document in mentor_cursor]
         mentee_documents = [document for document in mentee_cursor]

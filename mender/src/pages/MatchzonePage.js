@@ -5,10 +5,11 @@ import TopNavBar from "../components/TopNavBar";
 import './MatchzonePage.css'
 
 function MatchzonePage(props) {
+    console.log(props);
     return (
         <div className="overflow-x-hidden">
             {/* <TopNavBar /> */}
-            <Cards/>
+            <Cards email={props.email}/>
             {/* <BotNavBar /> */}
         </div>
     );

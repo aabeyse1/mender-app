@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from djangoProject.mongo_connector import Database, Mentee, Mentor
+from bson import ObjectId
 
 def add_person_mentee(request):
     data = request.POST
@@ -61,11 +62,16 @@ def add_person_mentor(request):
 
 def retrieveUser(request, email):
     emailToFind = email
-    userInfo = Database.find_user(emailToFind)
-    # return HttpResponse(userInfo)
-    return JsonResponse(userInfo)
+    userInstance = Database.find_user(emailToFind)
+    if userInstance is None:
+        return JsonResponse(None, safe=False)
+    else:
+        for user in userInstance:
+            user.pop('_id', None)
+        return JsonResponse(userInstance, safe=False)
 
 def retrieveUsers(request, email):
     users = Database.getUsers(email)
-    # return HttpResponse(users)
-    return JsonResponse(users)
+    for user in users:
+            user.pop('_id', None)
+    return JsonResponse(users, safe=False)

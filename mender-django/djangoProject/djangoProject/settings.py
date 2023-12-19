@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$*()0e!8u-s)pz-4&+-(^tzhhs4yxz%fi_&p%tpf=*f^3=j0&4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -60,8 +60,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'djangoProject.urls'
 
-MONGO_DB_SETTINGS = {
-    'connection_string': 'mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net',
+# After modification (without SSL)
+MONGO_DB_SETTINGS = {'connection_string': 'mongodb+srv://mender-admin:446projxyz@cluster0.yl9k9ng.mongodb.net','database_name': 'mender',
 }
 
 TEMPLATES = [

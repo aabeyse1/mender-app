@@ -12,7 +12,7 @@ function TopNavBar(props) {
   return (
     <Navbar fixed='top' style={{ background: 'linear-gradient(to bottom, #f0f0f0, #e0e0e0)' }}>
       <Container>
-        <Navbar.Brand href="/matchZone" style={{ color: 'transparent', backgroundImage: 'linear-gradient(to right, #4e8cff, #ff5e62)', backgroundClip: 'text', textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}>
+        <Navbar.Brand href="/matchZone" style={{ color: 'transparent', backgroundImage: 'linear-gradient(to right, #4e8cff, #ff5e62)', backgroundClip: 'text',}}>
           <h1>Mender</h1>
         </Navbar.Brand>
         <Navbar.Toggle></Navbar.Toggle>
@@ -22,7 +22,7 @@ function TopNavBar(props) {
               <Row>
                 <Col>
                   <Navbar.Text>
-                    Signed in as: <a href="/profile" style={{ color: '#333' }}>{props.name}</a>
+                    Signed in as: {props.name}
                   </Navbar.Text>
                 </Col>
               </Row>

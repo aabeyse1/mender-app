@@ -8,8 +8,8 @@ function MatchesPage(props) {
     return (
         <>
             {/* <TopNavBar /> */}
-            <Container className="mt-20 mb-11">
-                <ProfileCard />
+            <Container className="mt-24 mb-11">
+                <ProfileCard email={props.email} />
             </Container>
             {/* <BotNavBar /> */}
         </>
