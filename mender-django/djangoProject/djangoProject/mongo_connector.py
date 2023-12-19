@@ -89,10 +89,12 @@ class Match:
 
     @staticmethod
     def create_match(mentor_email, mentee_email):
-        match = Match(mentor_email=mentor_email, mentee_email=mentee_email)
+        mentee = Mentee.get_mentee_collection().find_one({'email': mentee_email})
+        mentor = Mentor.get_mentor_collection().find_one({'email': mentor_email})
+
+        match = Match(mentor['_id'], mentee['_id'])
         match_id = Match.get_matches_collection().insert_one(vars(match)).inserted_id
 
-        mentor = Mentor.get_mentor_collection().find_one({'email': mentor_email})
         if mentor:
             mentor_matches = mentor.get('matches', [])
             mentor_matches.append(mentee_email)
@@ -105,7 +107,6 @@ class Match:
                 {'$set': {'matches': mentor_matches, 'likes': mentor_likes}}
             )
 
-        mentee = Mentee.get_mentee_collection().find_one({'email': mentee_email})
         if mentee:
             mentee_matches = mentee.get('matches', [])
             mentee_matches.append(mentor_email)
