@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from settings import MONGO_DB_SETTINGS
+from .settings import MONGO_DB_SETTINGS
 
 connection_string = MONGO_DB_SETTINGS['connection_string']
 client = MongoClient(connection_string)

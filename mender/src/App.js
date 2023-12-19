@@ -9,6 +9,7 @@ import TopNavBar from './components/TopNavBar';
 import BotNavBar from './components/BotNavBar';
 import { GoogleLogin } from "react-google-login";
 import LoginPane from './components/LoginPane';
+import axios from 'axios';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
   function handleCallbackResponse(response) {
     var userObject = jwtDecode(response.credential);
     setLogin(userObject);
+    const token = response.token;
     sessionStorage.setItem('login', JSON.stringify(userObject));
     console.log(userObject);
   }
@@ -41,7 +43,12 @@ function App() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        background: 'linear-gradient(to bottom, #ffffff, #f0f0f0)', // Adjust gradient colors
+        minHeight: '100vh', // Make sure the container takes at least the full height of the viewport
+      }}
+    >
       {Object.keys(login).length == 0 &&
       <LoginPane></LoginPane>
       } 
