@@ -109,11 +109,7 @@ function ProfileCard(props) {
               <Form.Label>Company</Form.Label>
               <Form.Control type="text" name="company" placeholder={userData.company || ''} onChange={handleInputChange}></Form.Control>
               <Form.Text muted>Current company</Form.Text>
-          {/* </Form.Group><Form.Group controlId='profileGroupEmail'>
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="text" name="email" placeholder={userData.email || ''} onChange={handleInputChange}></Form.Control>
-              <Form.Text muted>Current email</Form.Text>
-          </Form.Group><Form.Group controlId='profileGroupLinkedIn'> */}
+          </Form.Group><Form.Group controlId='profileGroupLinkedIn'>
               <Form.Label>LinkedIn</Form.Label>
               <Form.Control type="text" name="linkedin" placeholder={userData.linkedin || ''} onChange={handleInputChange}></Form.Control>
               <Form.Text muted>Current linkedin</Form.Text>

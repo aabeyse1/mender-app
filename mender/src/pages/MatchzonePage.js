@@ -7,7 +7,7 @@ import './MatchzonePage.css'
 function MatchzonePage(props) {
     console.log(props);
     return (
-        <div className="overflow-x-hidden">
+        <div className="overflow-hidden">
             {/* <TopNavBar /> */}
             <Cards email={props.email}/>
             {/* <BotNavBar /> */}
