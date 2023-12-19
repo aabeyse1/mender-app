@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from .settings import MONGO_DB_SETTINGS
+from settings import MONGO_DB_SETTINGS
 
 connection_string = MONGO_DB_SETTINGS['connection_string']
 client = MongoClient(connection_string)
@@ -205,4 +205,34 @@ class Database:
 
         user_collection.update_one({'_id': user_id}, update_query)
         return True
+    
+    @staticmethod
+    def calculate_euclidean_distance(user1, user2):
+        attributes = ['area', 'hometown', 'interests', 'industry']
+
+        distance_squared = sum((float(str(user1[attr]) if isinstance(user1, dict) and isinstance(user1[attr], (int, float)) else 0) - float(str(user2[attr]) if isinstance(user2, dict) and isinstance(user2[attr], (int, float)) else 0))**2 for attr in attributes)
+        return distance_squared 
+
+    @staticmethod
+    def sort_users_by_similarity(target_user, users, num_users):
+        distances = [(user, Database.calculate_euclidean_distance(target_user, user)) for user in users]
+        sorted_users = sorted(distances, key=lambda x: x[1])
+        return [user[0] for user in sorted_users[:num_users]]
+
+    @staticmethod
+    def get_users_from_opposite_collection(target_user_id):
+        mentor = Mentor.get_mentor_collection().find_one({'_id': target_user_id})
+        mentee = Mentee.get_mentee_collection().find_one({'_id': target_user_id})
+
+        if mentor:
+            opposite_collection = Mentee.get_mentee_collection()
+        elif mentee:
+            opposite_collection = Mentor.get_mentor_collection()
+        else:
+            raise ValueError("Invalid user ID")
+
+        opposite_users = list(opposite_collection.find({'_id': {'$ne': target_user_id}}))
+        opposite_users_dicts = [dict(user) for user in opposite_users]
+
+        return opposite_users_dicts
     

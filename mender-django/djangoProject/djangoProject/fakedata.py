@@ -1,4 +1,5 @@
 from mongo_connector import Mentee, Mentor, Match, Database
+from bson import ObjectId
 
 # clear database
 def delete_all_data():
@@ -53,8 +54,6 @@ def generate_fake_mentee():
 # Match.create_match(mentor1, mentee1)
 
 ##### TESTING FINDING USER ###
-# from bson import ObjectId
-
 # user_id_str = "6580b99685e161a2b9bd5e6e" 
 # user_id = ObjectId(user_id_str)
 
@@ -73,3 +72,15 @@ def generate_fake_mentee():
 ##### TESTING UPDATE USER #####
 # user = Database.find_user('John Walker', 'morganjim')
 # Database.update_user(user, 'Jonny Walker', 'Iowa', 'Troyberg', 'Painting', 'Software', 'Macalester', None, 'morganjim')
+
+
+##### TESTING SORTING ALGORITHM #####
+# user_id_str = "6580b99685e161a2b9bd5e6e" 
+# user_id = ObjectId(user_id_str)
+# target_user = Database.find_user(user_id)
+# similar_users = Database.sort_users_by_similarity(target_user, Database.get_users_from_opposite_collection(user_id), 2)
+
+# # Print the sorted users
+# for user in similar_users:
+#     print(user)
+
