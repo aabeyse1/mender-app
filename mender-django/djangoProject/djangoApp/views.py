@@ -63,3 +63,7 @@ def retrieveUser(request, email):
     emailToFind = email
     userInfo = Database.find_user(emailToFind)
     return HttpResponse(userInfo)
+
+def retrieveUsers(request, email):
+    users = Database.getUsers(email)
+    return HttpResponse(users)

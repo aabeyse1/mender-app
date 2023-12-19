@@ -117,31 +117,29 @@ class Database:
     
     @staticmethod
     def find_user(user_email):
-        # mentor = Mentor.get_mentor_collection().find_one({'_id': user_id})
-        # mentor = Mentor.get_mentor_collection().find()
-        # # mentee = Mentee.get_mentee_collection().find_one({'_id': user_id})
-        # mentee = Mentee.get_mentee_collection().find()
-        # if mentor:
-        #     array = []
-        #     for document in mentor:
-        #         if (document['_id'] == user_id):
-        #             array.append(document)
-        #     return array
-        # elif mentee:
-        #     array = []
-        #     for document in mentor:
-        #         if (document['_id'] == user_id):
-        #             array.append(document)
-        #     return array
-        # else:
-        #     return None
-
-
         mentor_collection = Mentor.get_mentor_collection()
         mentee_collection = Mentee.get_mentee_collection()
 
         mentor_cursor = mentor_collection.find({'email': user_email})
         mentee_cursor = mentee_collection.find({'email': user_email})
+
+        mentor_documents = [document for document in mentor_cursor]
+        mentee_documents = [document for document in mentee_cursor]
+
+        if mentor_documents:
+            return mentor_documents
+        elif mentee_documents:
+            return mentee_documents
+        else:
+            return None
+
+    @staticmethod
+    def getUsers(email):
+        mentor_collection = Mentor.get_mentor_collection()
+        mentee_collection = Mentee.get_mentee_collection()
+
+        mentor_cursor = mentor_collection.find().limit(3)
+        mentee_cursor = mentee_collection.find().limit(3)
 
         mentor_documents = [document for document in mentor_cursor]
         mentee_documents = [document for document in mentee_cursor]
