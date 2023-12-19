@@ -11,6 +11,7 @@ Install packages:
 npm install jwt-decode
 npm install react-google-login
 npm install @react-oauth/google
+pip install certifi
 ```
 
 Navigate to the "mender-django" folder within the app and run:
