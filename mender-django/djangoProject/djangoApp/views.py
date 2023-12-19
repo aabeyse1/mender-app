@@ -83,6 +83,6 @@ def like(request, email1, email2):
     print(match_successful)
     return JsonResponse(match_successful, safe=False)
 
-def updateUser(request, email, name, location, college, hometown, industry, interests):
+def updateUser(request, email, name, location, college, company, hometown, industry, interests, linkedin):
     success = Database.update_user(name, location, hometown, industry, interests, college, company, email, linkedin)
     return success
