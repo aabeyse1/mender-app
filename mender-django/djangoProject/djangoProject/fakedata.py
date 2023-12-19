@@ -19,6 +19,7 @@ def generate_fake_mentor():
         'industry': fake.job(),
         'interests': fake.job(),
         'company': fake.company(),
+        'college': fake.company(),
         'email': fake.email(),
         'linkedin': fake.user_name(),
     }
@@ -36,13 +37,13 @@ def generate_fake_mentee():
     }
 
 ##### CREATE NEW FAKE DATA ######
-# # Populate mentors collection with fake data
-# for _ in range(2):  # Generate 10 fake mentors
+# Populate mentors collection with fake data
+# for _ in range(50):  # Generate 10 fake mentors
 #     mentor_data = generate_fake_mentor()
 #     created, mentor_id = Mentor.create_mentor(**mentor_data)
 
 # # Populate mentees collection with fake data
-# for _ in range(2):  # Generate 10 fake mentees
+# for _ in range(50):  # Generate 10 fake mentees
 #     mentee_data = generate_fake_mentee()
 #     created, mentee_id = Mentee.create_mentee(**mentee_data)
 
@@ -54,10 +55,8 @@ def generate_fake_mentee():
 # Match.create_match(mentor1, mentee1)
 
 ##### TESTING FINDING USER ###
-# user_id_str = "6580b99685e161a2b9bd5e6e" 
-# user_id = ObjectId(user_id_str)
 
-# user = Database.find_user(user_id)
+# user = Database.find_user("yharris@example.org")
 # if user:
 #     print(f"found with ID {user}")
 # else:
@@ -65,9 +64,10 @@ def generate_fake_mentee():
 
 
 ##### TESTING LIKE+MATCH #######
-# Database.add_like(Database.find_user("John Walker", "morganjim"), Database.find_user("Judy Everett", "robert16"))
-# Database.add_like(Database.find_user("Judy Everett", "robert16"), Database.find_user("John Walker", "morganjim"))
-
+# Database.add_like("scott91@example.com", "nguyen.quang.minh.cva@gmail.com")
+# Database.add_like("mooreedward@example.com", "nguyen.quang.minh.cva@gmail.com")
+# Database.add_like("ndavis@example.org", "nguyen.quang.minh.cva@gmail.com")
+# Database.add_like("cervantesanne@example.net", "nguyen.quang.minh.cva@gmail.com")
 
 ##### TESTING UPDATE USER #####
 # user = Database.find_user('John Walker', 'morganjim')
@@ -83,4 +83,3 @@ def generate_fake_mentee():
 # # Print the sorted users
 # for user in similar_users:
 #     print(user)
-
